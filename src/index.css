@@ -1,0 +1,23 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    font-family: 'Roboto', sans-serif;
+}
+
+.my-container{
+    @apply lg:w-[90%] w-[95%] mx-auto
+}
+
+.text-gradient{
+    @apply text-[#6817E3]
+}
+
+.primary-btn{
+    @apply px-5 py-1 rounded-md bg-gradient-to-r from-[#A408C7] to-[#6817E3] text-white
+}

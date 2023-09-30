@@ -1,0 +1,8 @@
+.navlinks{
+    transition: transform ease-in .2s;
+    transform-origin: center center;
+}
+
+.navlinks:hover{
+    transform: scale(1.08);
+}
