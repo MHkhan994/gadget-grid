@@ -14,10 +14,23 @@ body{
     @apply lg:w-[90%] w-[95%] mx-auto
 }
 
+.bg-gradient{
+    @apply bg-gradient-to-r from-[#A408C7] to-[#6817E3]
+}
+
 .text-gradient{
     @apply text-[#6817E3]
 }
 
 .primary-btn{
-    @apply px-5 py-1 rounded-md bg-gradient-to-r from-[#A408C7] to-[#6817E3] text-white
+    transition: all ease-in-out .3s;
+    @apply px-7 border border-transparent py-2 rounded-md bg-gradient-to-r from-[#A408C7] to-[#6817E3] text-white
+}
+
+.primary-btn:hover{
+    @apply shadow-lg shadow-[#cb8ffc] mb-1
+}
+
+.secondery-btn{
+    @apply bg-blue-800 text-white px-7 py-1 rounded-lg
 }
