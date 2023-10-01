@@ -4,6 +4,7 @@ import CatagoryNav from "../Pages/Shared/catagoryNav";
 import { useEffect } from "react";
 import Aos from "aos";
 import 'aos/dist/aos.css';
+import MobileNavbar from "../Pages/Shared/MobileNavbar";
 
 const Main = () => {
 
@@ -15,9 +16,16 @@ const Main = () => {
 
     return (
         <div className="bg-white">
-            <Navbar></Navbar>
+            <div className="hidden lg:block">
+                <Navbar></Navbar>
+            </div>
+            <div className="lg:hidden block">
+                <MobileNavbar></MobileNavbar>
+            </div>
             <CatagoryNav></CatagoryNav>
-            <Outlet></Outlet>
+            <div className="mt-16 lg:mt-0">
+                <Outlet></Outlet>
+            </div>
             <div className="h-screen"></div>
         </div>
     );
