@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../Pages/Shared/Navbar";
-import CatagoryNav from "../Pages/Shared/catagoryNav";
 import { useEffect } from "react";
 import Aos from "aos";
 import 'aos/dist/aos.css';
@@ -22,7 +21,6 @@ const Main = () => {
             <div className="lg:hidden block">
                 <MobileNavbar></MobileNavbar>
             </div>
-            <CatagoryNav></CatagoryNav>
             <div className="mt-16 lg:mt-0">
                 <Outlet></Outlet>
             </div>
