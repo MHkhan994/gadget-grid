@@ -21,7 +21,7 @@ const Main = () => {
             <div className="lg:hidden block">
                 <MobileNavbar></MobileNavbar>
             </div>
-            <div className="mt-16 lg:mt-0">
+            <div className="mt-20 lg:mt-0">
                 <Outlet></Outlet>
             </div>
             <div className="h-screen"></div>

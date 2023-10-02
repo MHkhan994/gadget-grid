@@ -2,7 +2,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 
-import laptopImg from '../../assets/banner/laptop.png'
+import laptopImg from '../../assets/banner/laptop-2.webp'
 import cameraImg from '../../assets/banner/camera.png'
 import cctvImg from '../../assets/banner/cctv.png'
 import headphonesImg from '../../assets/banner/headphones.png'
@@ -47,7 +47,7 @@ const Banner = () => {
     ]
 
     return (
-        <div data-aos="fade-up" className='lg:h-[75vh] mt-5 min-h-[300px] h-[95vh] md:h-[30vh] my-container rounded-3xl overflow-hidden relative'>
+        <div data-aos="fade-up" className='lg:h-[75vh] mt-5 min-h-[300px] h-[80vh] md:h-[30vh] my-container rounded-2xl overflow-hidden relative'>
             <Swiper
                 loop={true}
                 effect='fade'
@@ -62,14 +62,14 @@ const Banner = () => {
                     photos.map(photo => <SwiperSlide style={{ backgroundColor: photo.bg }} key={photo.bg} className={`lg:pt-5 rounded-2xl overflow-hidden`}>
                         <div className='flex justify-end lg:h-[75vh] h-[95vh] md:h-[30vh]'>
                             <div></div>
-                            <img src={photo.img} className='h-fit lg:h-full md:h-full' alt="" />
+                            <img src={photo.img} className={`h-fit lg:h-full md:h-full pe-7  ${photo.bg === '#9bf5c4' ? 'pe-0 ps-4 scale-x-105' : ''}`} alt="" />
                         </div>
                     </SwiperSlide>)
                 }
             </Swiper>
             <div className='absolute lg:h-[65vh] md:h-[30vh] h-[50vh] flex flex-col lg:justify-center justify-end lg:pt-12 gap-6 pb-5 lg:top-0 md:top-0 bottom-0 z-20 left-[5%] lg:w-[40vw] md:w-[45vw]'>
-                <h1 className='text-5xl font-bold'>All Things Tech, One Place.</h1>
-                <p>Navigating the world of gadgets has never been easier. Explore, compare, and get your tech fix, all in one hub.</p>
+                <h1 className='text-5xl font-bold'><span className='text-orange'>All</span> Things <span className='text-orange'>Tech</span>, One Place.</h1>
+                <p className='font-medium'>Navigating the world of gadgets has never been easier. Explore, compare, and get your tech fix, all in one hub.</p>
                 <div>
                     <button className='primary-btn'>Shop</button>
                 </div>

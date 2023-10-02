@@ -6,6 +6,12 @@
 @tailwind components;
 @tailwind utilities;
 
+
+:root{
+    --color-orange:#ff8249;
+    --color-blue:#6817E3;
+}
+
 body{
     font-family: 'Roboto', sans-serif;
 }
@@ -33,11 +39,32 @@ body{
     @apply shadow-lg shadow-[#cb8ffc]
 }
 
-
 .secondery-btn{
-    @apply bg-blue-800 text-white px-7 py-1 rounded-lg
+    background-color: var(--color-orange);
+    border: 1px solid transparent;
+    transition: all ease-in-out .3s;
+    @apply text-white px-7 py-1 rounded-lg text-lg
+}
+
+.secondery-btn:hover{
+    border: 1px solid var(--color-orange);
+    background-color: white;
+    color: var(--color-orange);
+    @apply shadow-lg shadow-[#ff8249] scale-105
+}
+
+.text-orange{
+    color: var(--color-orange);
+}
+
+.bg-orange{
+    background-color: var(--color-orange);
+}
+
+.border-orange{
+    border-color: var(--color-orange);
 }
 
 .text-blue{
-    @apply text-[#6817E3]
+    color:var(--color-blue)
 }
