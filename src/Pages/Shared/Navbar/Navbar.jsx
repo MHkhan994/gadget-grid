@@ -1,5 +1,5 @@
 import './Navbar.css'
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaUserCircle, FaHeart } from 'react-icons/fa';
 import { BsCart } from 'react-icons/bs'
 import { AiFillCaretDown } from 'react-icons/ai'
@@ -8,16 +8,23 @@ import { NavLink } from 'react-router-dom';
 import Login from '../Login/Login';
 import { AiOutlineClose } from 'react-icons/ai'
 import Register from '../Register/Register';
+import { AuthContext } from '../../../Providers/AuthProvider';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const Navbar = () => {
 
     const [userOpen, setUserOpen] = useState(false)
     const [authSystem, setAuthSystem] = useState('login')
+    const { user, logOut } = useContext(AuthContext)
 
     const modalClose = () => {
         const modal = document.getElementById('my_modal_4')
         modal.close()
     }
+
+    console.log(user);
 
     useEffect(() => {
         Aos.init({
@@ -25,6 +32,22 @@ const Navbar = () => {
             duration: 1000
         })
     }, [])
+
+    const handleLogout = () => {
+        logOut()
+            .then(() => {
+                toast.warn('Your logged out from this device', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            })
+    }
 
 
     return (
@@ -54,19 +77,27 @@ const Navbar = () => {
                             </div>
                         </button>
                         <button onClick={() => setUserOpen(!userOpen)} data-aos-delay="200" data-aos="fade-down" className="text-blue">
-                            <FaUserCircle></FaUserCircle>
+                            {
+                                !user || !user.photoURL ?
+                                    <FaUserCircle></FaUserCircle>
+                                    :
+                                    <img src={user.photoURL}></img>
+                            }
                             {userOpen && <AiFillCaretDown className='text-2xl rotate-180 top-5 absolute'></AiFillCaretDown>}
                         </button>
 
                     </ul>
                     {
                         userOpen && <div className='absolute flex justify-center gap-3 flex-col items-center right-6 -bottom-28 bg-gradient shadow-lg rounded-md h-32 w-40 z-60'>
+                            <h1 className='text-orange'>{user?.displayName}</h1>
                             <NavLink to={'/account'} className={(isActive) => isActive ? 'text-white' : ''}>Account</NavLink>
-                            <button className='text-white' onClick={() => {
-                                document.getElementById('my_modal_4').showModal()
-                                setAuthSystem('login')
-                            }}>Login</button>
-                            <button className='bg-white rounded-md px-4 py-1 text-orange'>
+                            {
+                                !user && <button className='text-white' onClick={() => {
+                                    document.getElementById('my_modal_4').showModal()
+                                    setAuthSystem('login')
+                                }}>Login</button>
+                            }
+                            <button onClick={handleLogout} className='bg-white rounded-md px-4 py-1 text-orange'>
                                 Logout
                             </button>
                         </div>
@@ -91,6 +122,18 @@ const Navbar = () => {
                 </dialog>
 
             </div>
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
         </div>
     );
 };

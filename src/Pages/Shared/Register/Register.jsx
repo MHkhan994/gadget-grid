@@ -5,11 +5,20 @@ import { AiOutlineClose } from 'react-icons/ai'
 import { AuthContext } from "../../../Providers/AuthProvider";
 
 import photoIcon from '../../../assets/photoUploadIcon.png'
+import { updateProfile } from "firebase/auth";
+import Swal from "sweetalert2";
+import UseModalClose from "../../../Hooks/UseModalClose";
+import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 
 const Register = ({ setAuthSystem }) => {
 
     const { createUser } = useContext(AuthContext)
     const [imageFile, setImageFile] = useState('')
+    const [imgLink, setImgLink] = useState('')
+    const { modalClose } = UseModalClose()
+    const [passError, setPassError] = useState('')
+    const [showPass, setShowPass] = useState(false)
+    const [showConfirmPass, setShowConfirmPass] = useState(false)
 
     const photoInputRef = useRef()
 
@@ -20,7 +29,13 @@ const Register = ({ setAuthSystem }) => {
     } = useForm();
 
     const onSubmit = (data) => {
-        const { email, password, name } = data
+        const { email, password, name, confirmPassword } = data
+
+        setPassError('')
+
+        if (password !== confirmPassword) {
+            setPassError("Password does't match!")
+        }
 
         const formData = new FormData()
         formData.append("image", imageFile)
@@ -30,12 +45,37 @@ const Register = ({ setAuthSystem }) => {
         })
             .then(res => res.json())
             .then(imgData => {
-                console.log(imgData.data.display_url);
+                setImgLink(imgData.data.display_url);
             })
-        // createUser(email, password)
-        //     .then(data => {
-        //         console.log(data);
-        //     })
+            .catch(error => {
+                console.log(error);
+            })
+        createUser(email, password)
+            .then(data => {
+                updateProfile(data.user, {
+                    displayName: name,
+                    photoURL: imgLink || ''
+                })
+                    .then(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Welcome',
+                            text: `${data.user.displayName}`,
+                        })
+                        modalClose()
+                    })
+            })
+            .catch(error => {
+                console.log(error);
+                if (error.message.includes('auth/email-already-in-use')) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Account already exist. Try loggin in.',
+                    })
+                    modalClose()
+                }
+            })
     }
 
     const handleImageFile = () => {
@@ -48,7 +88,7 @@ const Register = ({ setAuthSystem }) => {
 
 
     return (
-        <div className="min-h-[500px]">
+        <div className="h-[600px]">
             <div>
                 <h1 className="text-center text-white text-3xl font-semibold pb-5">Create Account</h1>
             </div>
@@ -76,8 +116,39 @@ const Register = ({ setAuthSystem }) => {
                     <label >
                         <span className="text-white">Password</span>
                     </label>
-                    <input {...register('password', { required: true })} type="text" placeholder="password" className="h-11 px-3 rounded-md shadow-lg outline-none" />
+                    <div className="relative">
+                        <input {...register('password', { required: true })} type={`${showPass ? 'text' : 'password'}`} placeholder="password" className="h-11 px-3 w-full rounded-md shadow-lg outline-none" />
+                        {/* show pass buttons */}
+                        <>
+                            {showPass ?
+                                <BsEyeFill onClick={() => setShowPass(!showPass)} className="absolute right-2 text-lg cursor-pointer text-blue bottom-[13px]"></BsEyeFill>
+                                :
+                                <BsEyeSlashFill onClick={() => setShowPass(!showPass)} className="absolute right-2 text-lg cursor-pointer text-orange bottom-[13px]"></BsEyeSlashFill>
+                            }
+                        </>
+                    </div>
+
                     {errors.password && errors.password.type === 'required' && <h1 className="text-orange pt-1">please enter your password.</h1>}
+                </div>
+
+                {/* -------confirm Password------- */}
+                <div className="form-control outline-none">
+                    <label >
+                        <span className="text-white">Confirm Password</span>
+                    </label>
+                    <div className="relative">
+                        <input {...register('confirmPassword', { required: true })} type={`${showConfirmPass ? 'text' : 'password'}`} placeholder="password" className="h-11 w-full px-3 rounded-md shadow-lg outline-none" />
+
+                        {/* show pass buttons */}
+                        <>
+                            {showConfirmPass ?
+                                <BsEyeFill onClick={() => setShowConfirmPass(!showConfirmPass)} className="absolute right-2 text-lg cursor-pointer text-blue bottom-[13px]"></BsEyeFill>
+                                :
+                                <BsEyeSlashFill onClick={() => setShowConfirmPass(!showConfirmPass)} className="absolute right-2 text-lg cursor-pointer text-orange bottom-[13px]"></BsEyeSlashFill>}
+                        </>
+                    </div>
+
+                    {errors.confirmPassword && errors.confirmPassword.type === 'required' && <h1 className="text-orange pt-1">please confirm password.</h1>}
                 </div>
 
                 <div onClick={handleImageFile} className="cursor-pointer my-2">
