@@ -3,6 +3,24 @@
     transform-origin: center center;
 }
 
+.my-modal{
+    border-radius: 3px;
+}
+
 .navlinks:hover{
     transform: scale(1.08);
+}
+
+.my-modal::-webkit-scrollbar{
+    width: 5px;
+    background-color: transparent;
+}
+
+.my-modal::-webkit-scrollbar-thumb{
+    background-color: var(--color-blue);
+    border-radius: 10px;
+}
+
+.my-modal::-webkit-scrollbar-track{
+    background-color: transparent;
 }

@@ -7,10 +7,12 @@ import Aos from 'aos';
 import { NavLink } from 'react-router-dom';
 import Login from '../Login/Login';
 import { AiOutlineClose } from 'react-icons/ai'
+import Register from '../Register/Register';
 
 const Navbar = () => {
 
     const [userOpen, setUserOpen] = useState(false)
+    const [authSystem, setAuthSystem] = useState('login')
 
     const modalClose = () => {
         const modal = document.getElementById('my_modal_4')
@@ -60,7 +62,10 @@ const Navbar = () => {
                     {
                         userOpen && <div className='absolute flex justify-center gap-3 flex-col items-center right-6 -bottom-28 bg-gradient shadow-lg rounded-md h-32 w-40 z-60'>
                             <NavLink to={'/account'} className={(isActive) => isActive ? 'text-white' : ''}>Account</NavLink>
-                            <button className='text-white' onClick={() => document.getElementById('my_modal_4').showModal()}>Login</button>
+                            <button className='text-white' onClick={() => {
+                                document.getElementById('my_modal_4').showModal()
+                                setAuthSystem('login')
+                            }}>Login</button>
                             <button className='bg-white rounded-md px-4 py-1 text-orange'>
                                 Logout
                             </button>
@@ -70,9 +75,14 @@ const Navbar = () => {
                 </div>
                 {/* ------------login register modal-------------- */}
                 <dialog id="my_modal_4" className="modal">
-                    <div className="modal-box lg:w-[70%] bg-[#6917e388] relative backdrop-blur-[10px] shadow-xl shadow-[#a408c769]">
-                        <div className="">
-                            <Login></Login>
+                    <div className="modal-box my-modal lg:w-[70%] bg-[#6917e388] relative backdrop-blur-[10px] shadow-xl shadow-[#a408c769]">
+                        <div>
+                            {
+                                authSystem === 'login' ?
+                                    <Login setAuthSystem={setAuthSystem}></Login>
+                                    :
+                                    <Register setAuthSystem={setAuthSystem}></Register>
+                            }
                         </div>
                         <button className='absolute top-0 right-0 bg-orange p-1 rounded-bl-xl' type="button" onClick={modalClose}>
                             <AiOutlineClose className='text-white text-2xl'></AiOutlineClose>
