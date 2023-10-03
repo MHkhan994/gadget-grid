@@ -5,10 +5,17 @@ import { BsCart } from 'react-icons/bs'
 import { AiFillCaretDown } from 'react-icons/ai'
 import Aos from 'aos';
 import { NavLink } from 'react-router-dom';
+import Login from '../Login/Login';
+import { AiOutlineClose } from 'react-icons/ai'
 
 const Navbar = () => {
 
     const [userOpen, setUserOpen] = useState(false)
+
+    const modalClose = () => {
+        const modal = document.getElementById('my_modal_4')
+        modal.close()
+    }
 
     useEffect(() => {
         Aos.init({
@@ -19,7 +26,7 @@ const Navbar = () => {
 
 
     return (
-        <div data-aos="fade-down" className={`w-full bg-white relative z-40 shadow-md`}>
+        <div data-aos="fade-down" className={`w-full bg-white relative z-40`}>
             <div className='z-10 bg-white py-4'>
                 <div className="my-container flex justify-between">
                     <img src="./logo.png" className="h-12" alt="" />
@@ -53,13 +60,26 @@ const Navbar = () => {
                     {
                         userOpen && <div className='absolute flex justify-center gap-3 flex-col items-center right-6 -bottom-28 bg-gradient shadow-lg rounded-md h-32 w-40 z-60'>
                             <NavLink to={'/account'} className={(isActive) => isActive ? 'text-white' : ''}>Account</NavLink>
-                            <NavLink to={'/login'} className={(isActive) => isActive ? 'text-white' : ''}>Login</NavLink>
+                            <button className='text-white' onClick={() => document.getElementById('my_modal_4').showModal()}>Login</button>
                             <button className='bg-white rounded-md px-4 py-1 text-orange'>
                                 Logout
                             </button>
                         </div>
+
                     }
                 </div>
+                {/* ------------login register modal-------------- */}
+                <dialog id="my_modal_4" className="modal">
+                    <div className="modal-box lg:w-[70%] bg-[#6917e388] relative backdrop-blur-[10px] shadow-xl shadow-[#a408c769]">
+                        <div className="">
+                            <Login></Login>
+                        </div>
+                        <button className='absolute top-0 right-0 bg-orange p-1 rounded-bl-xl' type="button" onClick={modalClose}>
+                            <AiOutlineClose className='text-white text-2xl'></AiOutlineClose>
+                        </button>
+                    </div>
+                </dialog>
+
             </div>
         </div>
     );

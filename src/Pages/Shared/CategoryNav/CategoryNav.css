@@ -1,0 +1,24 @@
+.category:hover .sub-category{
+ opacity: 1;
+}
+.category>:hover{
+    cursor: pointer;
+}
+
+.category> button:hover{
+color: var(--color-orange);
+}
+
+
+.category-li:hover{
+    color: white;
+    background-color: var(--color-orange);
+    /* @apply bg-gradient-to-r from-[#A408C7] to-[#6817E3] */
+}
+.category-li:hover .right-icon{
+    color: white;
+}
+
+.category .sub-category .category-li:hover .brand{
+opacity: 1;
+}

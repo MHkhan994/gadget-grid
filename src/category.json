@@ -1,0 +1,62 @@
+[
+    {
+        "name": "Desktop",
+        "subCategory": [
+            {
+                "name": "Intel PC"
+            },
+            {
+                "name": "Ryzen PC"
+            },
+            {
+                "name": "Brand PC",
+                "brand": [
+                    "Acer",
+                    "Asus",
+                    "Dell",
+                    "Hp",
+                    "Lenovo"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Laptop",
+        "subCategory": []
+    },
+    {
+        "name": "Monitor",
+        "subCategory": []
+    },
+    {
+        "name": "UPS",
+        "subCategory": []
+    },
+    {
+        "name": "Phone",
+        "subCategory": [
+            "xiaomi"
+        ]
+    },
+    {
+        "name": "Printer",
+        "subCategory": [
+            "sony"
+        ]
+    },
+    {
+        "name": "Camera",
+        "subCategory": []
+    },
+    {
+        "name": "Security",
+        "subCategory": []
+    },
+    {
+        "name": "Components",
+        "subCategory": [
+            "keyboard",
+            "mouse"
+        ]
+    }
+]

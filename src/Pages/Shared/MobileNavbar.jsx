@@ -1,4 +1,4 @@
-import './Navbar.css'
+import './Navbar/Navbar.css'
 import { useEffect, useState } from "react";
 import { FaUserCircle, FaHeart } from 'react-icons/fa';
 import { BsCart } from 'react-icons/bs'
