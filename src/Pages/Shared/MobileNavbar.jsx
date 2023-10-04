@@ -1,5 +1,5 @@
 import './Navbar/Navbar.css'
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaUserCircle, FaHeart } from 'react-icons/fa';
 import { BsCart } from 'react-icons/bs'
 import { CgSearch } from 'react-icons/cg'
@@ -10,6 +10,8 @@ import { AiFillCaretDown } from 'react-icons/ai';
 import { NavLink } from 'react-router-dom';
 import Login from './Login/Login';
 import Register from './Register/Register';
+import { AuthContext } from '../../Providers/AuthProvider';
+import { toast } from 'react-toastify';
 
 const MobileNavbar = () => {
     useEffect(() => {
@@ -22,10 +24,27 @@ const MobileNavbar = () => {
     const [serachOpen, setSearchOpen] = useState(false)
     const [userOpen, setUserOpen] = useState(false)
     const [authSystem, setAuthSystem] = useState('login')
+    const { user, logOut } = useContext(AuthContext)
 
     const modalClose = () => {
         const modal = document.getElementById('my_modal_3')
         modal.close()
+    }
+
+    const handleLogout = () => {
+        logOut()
+            .then(() => {
+                toast.warn('Your logged out from this device', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            })
     }
 
     return (
@@ -66,19 +85,27 @@ const MobileNavbar = () => {
                         setUserOpen(!userOpen)
                         setSearchOpen(false)
                     }} data-aos-delay="200" data-aos="fade-down" className="text-blue">
-                        <FaUserCircle></FaUserCircle>
-                        {userOpen && <AiFillCaretDown className='text-2xl pe-[3px] rotate-180 top-4 absolute'></AiFillCaretDown>}
+                        {
+                            !user || !user.photoURL ?
+                                <FaUserCircle></FaUserCircle>
+                                :
+                                <img src={user?.photoURL} className='h-7 w-7 me-2 object-cover rounded-full'></img>
+                        }
+                        {userOpen && <AiFillCaretDown className='text-2xl pe-[3px] rotate-180 top-5 absolute'></AiFillCaretDown>}
                     </button>
                 </ul>
             </div>
             {
-                userOpen && <div className='absolute flex justify-center gap-3 flex-col items-center right-3 -bottom-28 bg-gradient shadow-lg rounded-md h-32 w-40 z-60'>
+                userOpen && <div className='absolute flex justify-center gap-3 flex-col items-center pb-3 right-3 top-14 bg-gradient shadow-lg rounded-md h-40 w-40 z-60'>
+                    <h1 className='text-orange text-center'>{user?.displayName}</h1>
                     <NavLink to={'/account'} className={(isActive) => isActive ? 'text-white' : ''}>Account</NavLink>
-                    <button className='text-white' onClick={() => {
-                        document.getElementById('my_modal_3').showModal()
-                        setAuthSystem('login')
-                    }}>Login</button>
-                    <button className='bg-white rounded-md px-4 py-1 text-orange'>
+                    {
+                        !user && <button className='text-white' onClick={() => {
+                            document.getElementById('my_modal_3').showModal()
+                            setAuthSystem('login')
+                        }}>Login</button>
+                    }
+                    <button onClick={handleLogout} className='bg-white rounded-md px-4 py-1 text-orange'>
                         Logout
                     </button>
                 </div>
@@ -96,9 +123,9 @@ const MobileNavbar = () => {
                     <div>
                         {
                             authSystem === 'login' ?
-                                <Login setAuthSystem={setAuthSystem}></Login>
+                                <Login setAuthSystem={setAuthSystem} setUserOpen={setUserOpen}></Login>
                                 :
-                                <Register setAuthSystem={setAuthSystem}></Register>
+                                <Register setAuthSystem={setAuthSystem} setUserOpen={setUserOpen}></Register>
                         }
                     </div>
                     <button className='absolute top-0 right-0 bg-orange p-1 rounded-bl-xl' type="button" onClick={modalClose}>

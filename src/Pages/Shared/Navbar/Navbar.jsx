@@ -24,7 +24,7 @@ const Navbar = () => {
         modal.close()
     }
 
-    console.log(user);
+    console.log(user?.photoURL);
 
     useEffect(() => {
         Aos.init({
@@ -81,15 +81,15 @@ const Navbar = () => {
                                 !user || !user.photoURL ?
                                     <FaUserCircle></FaUserCircle>
                                     :
-                                    <img src={user.photoURL}></img>
+                                    <img src={user?.photoURL} className='h-7 w-7 me-2 object-cover rounded-full'></img>
                             }
                             {userOpen && <AiFillCaretDown className='text-2xl rotate-180 top-5 absolute'></AiFillCaretDown>}
                         </button>
 
                     </ul>
                     {
-                        userOpen && <div className='absolute flex justify-center gap-3 flex-col items-center right-6 -bottom-28 bg-gradient shadow-lg rounded-md h-32 w-40 z-60'>
-                            <h1 className='text-orange'>{user?.displayName}</h1>
+                        userOpen && <div className='absolute flex justify-center gap-3 flex-col items-center pb-3 right-6 top-16 bg-gradient shadow-lg rounded-md h-40 w-40 z-60'>
+                            <h1 className='text-orange text-center'>{user?.displayName}</h1>
                             <NavLink to={'/account'} className={(isActive) => isActive ? 'text-white' : ''}>Account</NavLink>
                             {
                                 !user && <button className='text-white' onClick={() => {
@@ -110,9 +110,9 @@ const Navbar = () => {
                         <div>
                             {
                                 authSystem === 'login' ?
-                                    <Login setAuthSystem={setAuthSystem}></Login>
+                                    <Login setAuthSystem={setAuthSystem} setUserOpen={setUserOpen}></Login>
                                     :
-                                    <Register setAuthSystem={setAuthSystem}></Register>
+                                    <Register setAuthSystem={setAuthSystem} setUserOpen={setUserOpen}></Register>
                             }
                         </div>
                         <button className='absolute top-0 right-0 bg-orange p-1 rounded-bl-xl' type="button" onClick={modalClose}>

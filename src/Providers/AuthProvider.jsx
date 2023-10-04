@@ -5,7 +5,7 @@ const auth = getAuth(app)
 
 export const AuthContext = createContext()
 
-const googleProvider = GoogleAuthProvider()
+const googleProvider = new GoogleAuthProvider()
 
 const AuthProvider = ({ children }) => {
 
@@ -17,12 +17,13 @@ const AuthProvider = ({ children }) => {
         const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
             if (currentUser) {
                 setUser(currentUser)
-                setLoading(false)
             }
             else {
                 setUser(null)
             }
+            setLoading(false)
         })
+        setLoading(false)
 
         return () => { unSubscribe() }
     }, [])
@@ -41,6 +42,7 @@ const AuthProvider = ({ children }) => {
 
     // google login
     const googleLogin = () => {
+        setLoading(true)
         return signInWithPopup(auth, googleProvider)
     }
 

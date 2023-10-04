@@ -28,11 +28,11 @@ const CategoryNav = () => {
 
     return (
         <div data-aos="fade-down" className={`bg-white shadow-lg h-11 hidden lg:block w-full z-20 ${scrolled ? 'fixed top-0' : 'top-34 relative'}`}>
-            <div className="my-container flex justify-between items-center h-full">
+            <div className="my-container flex justify-between items-center category h-full">
                 {
                     categories.map((c, i) => {
                         const subC = c.subCategory
-                        return <li key={c.name} className="font-semibold hover:text-orange category list-none relative z-30">
+                        return <li key={c.name} className="font-semibold hover:text-orange list-none relative z-30">
                             <button onClick={() => {
                                 setSeachCategory(c.name)
                                 setSearchSubCategory('')
@@ -40,7 +40,7 @@ const CategoryNav = () => {
                             }}
                             >{c.name}</button>
 
-                            {subC.length > 0 && <ul className={`absolute opacity-0 py-4 sub-category bg-white shadow-lg mt-2 z-60 font-normal flex flex-col w-48 border-t-[3px] border-orange ${i > 4 ? 'right-0' : 'left-0'}`}>
+                            {subC.length > 0 && <ul className={`absolute opacity-0 py-4 sub-category bg-white shadow-lg mt-2 z-60 flex font-normal flex-col w-48 border-t-[3px] border-orange ${i > 4 ? 'right-0' : 'left-0'}`}>
                                 {
                                     subC.map((sc, j) => {
                                         const brand = sc.brand

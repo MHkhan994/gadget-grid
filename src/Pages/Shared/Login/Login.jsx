@@ -5,11 +5,13 @@ import { AuthContext } from "../../../Providers/AuthProvider";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import Swal from "sweetalert2";
 import UseModalClose from "../../../Hooks/UseModalClose";
+import { RotatingLines } from "react-loader-spinner";
+import axios from "axios";
 
-const Login = ({ setAuthSystem }) => {
+const Login = ({ setAuthSystem, setUserOpen }) => {
 
     const { modalClose } = UseModalClose()
-    const { login, user } = useContext(AuthContext)
+    const { login, user, googleLogin, loading } = useContext(AuthContext)
     const [showPass, setShowPass] = useState(false)
     const [authError, setAuthError] = useState('')
 
@@ -20,7 +22,7 @@ const Login = ({ setAuthSystem }) => {
         formState: { errors },
     } = useForm();
 
-    console.log(user?.email);
+    console.log(user);
 
     const onSubmit = (data) => {
         setAuthError('')
@@ -30,15 +32,53 @@ const Login = ({ setAuthSystem }) => {
                 Swal.fire({
                     icon: 'success',
                     title: 'Welcome Back',
-                    text: `${data.user.displayName}`,
+                    text: `${data?.user?.displayName}`,
                 })
                 modalClose()
                 reset()
+                setUserOpen(false)
             })
             .catch(error => {
                 if (error.message.includes('invalid-login-credentials')) {
                     setAuthError("Wrong email or password. Try again")
                 }
+            })
+    }
+
+    // ===========google login===========
+    const handleGoogleLogin = () => {
+        googleLogin()
+            .then((res) => {
+                const user = res.user
+                if (user) {
+                    const newUser = {
+                        name: user.displayName,
+                        email: user.email,
+                        photo: user.photoURL || '',
+                        role: 'user'
+                    }
+                    axios.post('http://localhost:5000/users', newUser)
+                        .then(res => {
+                            console.log(res.data);
+                        })
+                }
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Welcome Back',
+                    text: `${res?.user?.displayName}`,
+                })
+                modalClose()
+                setUserOpen(false)
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Opps!',
+                    text: `sorry something went wrong. please try agian later`,
+                })
+                modalClose()
+                setUserOpen(false)
+                console.log(error);
             })
     }
 
@@ -82,11 +122,26 @@ const Login = ({ setAuthSystem }) => {
                         authError && <h1 className="text-orange pt-1">{authError}</h1>
                     }
                 </div>
-                <button className="bg-orange w-full h-11 rounded-lg text-white text-lg shadow-lg">Login</button>
+                {
+                    loading ?
+                        <button type="button" className="bg-orange w-full flex justify-center items-center h-11 rounded-lg text-white text-lg shadow-lg">
+                            <RotatingLines
+                                strokeColor="white"
+                                strokeWidth="5"
+                                animationDuration="0.75"
+                                width="38"
+                                visible={true}
+                            />
+                        </button>
+                        :
+                        <button className="bg-orange w-full flex justify-center items-center h-11 rounded-lg text-white text-lg shadow-lg">
+                            Login
+                        </button>
+                }
             </form>
             <h1 className="text-center text-white py-4">or log in with</h1>
             <div>
-                <button className="bg-gradient w-full flex justify-center items-center h-11 rounded-lg shadow-lg text-white text-2xl gap-4">
+                <button onClick={handleGoogleLogin} className="bg-gradient w-full flex justify-center items-center h-11 rounded-lg shadow-lg text-white text-2xl gap-4">
                     <FaGoogle className=""></FaGoogle>
                     <p>Google</p>
                 </button>

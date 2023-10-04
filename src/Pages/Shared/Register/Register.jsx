@@ -9,12 +9,14 @@ import { updateProfile } from "firebase/auth";
 import Swal from "sweetalert2";
 import UseModalClose from "../../../Hooks/UseModalClose";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
+import axios from "axios";
 
-const Register = ({ setAuthSystem }) => {
+import { RotatingLines } from "react-loader-spinner";
 
-    const { createUser } = useContext(AuthContext)
+const Register = ({ setAuthSystem, setUserOpen }) => {
+
+    const { createUser, loading, googleLogin } = useContext(AuthContext)
     const [imageFile, setImageFile] = useState('')
-    const [imgLink, setImgLink] = useState('')
     const { modalClose } = UseModalClose()
     const [passError, setPassError] = useState('')
     const [showPass, setShowPass] = useState(false)
@@ -35,6 +37,7 @@ const Register = ({ setAuthSystem }) => {
 
         if (password !== confirmPassword) {
             setPassError("Password does't match!")
+            return
         }
 
         const formData = new FormData()
@@ -45,36 +48,85 @@ const Register = ({ setAuthSystem }) => {
         })
             .then(res => res.json())
             .then(imgData => {
-                setImgLink(imgData.data.display_url);
-            })
-            .catch(error => {
-                console.log(error);
-            })
-        createUser(email, password)
-            .then(data => {
-                updateProfile(data.user, {
-                    displayName: name,
-                    photoURL: imgLink || ''
-                })
-                    .then(() => {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Welcome',
-                            text: `${data.user.displayName}`,
+                createUser(email, password)
+                    .then(data => {
+                        updateProfile(data.user, {
+                            displayName: name,
+                            photoURL: imgData?.data?.display_url || ''
                         })
-                        modalClose()
+                            .then(() => {
+                                const newUser = {
+                                    name,
+                                    email,
+                                    photo: imgData?.data?.display_url || '',
+                                    role: 'user'
+                                }
+
+                                axios.post('http://localhost:5000/users', newUser)
+                                    .then(res => {
+                                        console.log(res.data);
+                                    })
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Welcome',
+                                    text: `${data.user.displayName}`,
+                                })
+                                modalClose()
+                                setUserOpen(false)
+                            })
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        if (error.message.includes('auth/email-already-in-use')) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Account already exist. Try loggin in.',
+                            })
+                            modalClose()
+                        }
                     })
             })
             .catch(error => {
                 console.log(error);
-                if (error.message.includes('auth/email-already-in-use')) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Account already exist. Try loggin in.',
-                    })
-                    modalClose()
+            })
+
+    }
+
+    // ===========google login===========
+    const handleGoogleLogin = () => {
+        googleLogin()
+            .then((res) => {
+                const user = res.user
+                if (user) {
+                    const newUser = {
+                        name: user.displayName,
+                        email: user.email,
+                        photo: user.photoURL || '',
+                        role: 'user'
+                    }
+                    axios.post('http://localhost:5000/users', newUser)
+                        .then(res => {
+                            console.log(res.data);
+                        })
                 }
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Welcome Back',
+                    text: `${res?.user?.displayName}`,
+                })
+                modalClose()
+                setUserOpen(false)
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Opps!',
+                    text: `sorry something went wrong. please try agian later`,
+                })
+                modalClose()
+                setUserOpen(false)
+                console.log(error);
             })
     }
 
@@ -129,6 +181,7 @@ const Register = ({ setAuthSystem }) => {
                     </div>
 
                     {errors.password && errors.password.type === 'required' && <h1 className="text-orange pt-1">please enter your password.</h1>}
+                    {passError && <h1 className="text-orange pt-1">{passError}</h1>}
                 </div>
 
                 {/* -------confirm Password------- */}
@@ -149,6 +202,7 @@ const Register = ({ setAuthSystem }) => {
                     </div>
 
                     {errors.confirmPassword && errors.confirmPassword.type === 'required' && <h1 className="text-orange pt-1">please confirm password.</h1>}
+                    {passError && <h1 className="text-orange pt-1">{passError}</h1>}
                 </div>
 
                 <div onClick={handleImageFile} className="cursor-pointer my-2">
@@ -166,11 +220,26 @@ const Register = ({ setAuthSystem }) => {
                         </button>
                     </div>
                 }
-                <button className="bg-orange w-full h-11 rounded-lg text-white text-lg shadow-lg">Register</button>
+                {
+                    loading ?
+                        <button type="button" className="bg-orange w-full flex justify-center items-center h-11 rounded-lg text-white text-lg shadow-lg">
+                            <RotatingLines
+                                strokeColor="white"
+                                strokeWidth="6"
+                                animationDuration="0.75"
+                                width="38"
+                                visible={true}
+                            />
+                        </button>
+                        :
+                        <button className="bg-orange w-full flex justify-center items-center h-11 rounded-lg text-white text-lg shadow-lg">
+                            Register
+                        </button>
+                }
             </form>
             <h1 className="text-center text-white py-4">or log in with</h1>
             <div>
-                <button className="bg-gradient border w-full flex justify-center items-center h-11 rounded-lg shadow-lg text-white text-2xl gap-4">
+                <button onClick={handleGoogleLogin} className="bg-gradient border w-full flex justify-center items-center h-11 rounded-lg shadow-lg text-white text-2xl gap-4">
                     <FaGoogle className=""></FaGoogle>
                     <p>Google</p>
                 </button>

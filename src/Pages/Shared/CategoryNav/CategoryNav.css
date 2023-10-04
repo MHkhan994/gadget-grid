@@ -1,24 +1,31 @@
-.category:hover .sub-category{
- opacity: 1;
-}
-.category>:hover{
+.category li .sub-category {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s; /* Adjust the timing if needed */
     cursor: pointer;
 }
 
-.category> button:hover{
-color: var(--color-orange);
-}
-
-
-.category-li:hover{
-    color: white;
+.sub-category li:hover{
     background-color: var(--color-orange);
-    /* @apply bg-gradient-to-r from-[#A408C7] to-[#6817E3] */
-}
-.category-li:hover .right-icon{
     color: white;
 }
 
-.category .sub-category .category-li:hover .brand{
-opacity: 1;
+.sub-category li:hover .right-icon{
+    color: white;
+}
+
+.category li:hover .sub-category {
+    opacity: 1;
+    visibility: visible;
+}
+
+.category .sub-category .category-li .brand {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s; /* Adjust the timing if needed */
+}
+
+.category .sub-category .category-li:hover .brand {
+    opacity: 1;
+    visibility: visible;
 }
