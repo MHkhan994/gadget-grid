@@ -3,6 +3,7 @@ import Main from "../Layout/Main";
 import Home from "../Pages/Home/Home";
 import Dashboard from "../Layout/Dashboard";
 import Orders from "../Pages/Dashboard/DashboardPages/Orders";
+import Categories from "../Pages/Dashboard/DashboardPages/Categories";
 
 const router = createBrowserRouter([
     {
@@ -20,8 +21,12 @@ const router = createBrowserRouter([
         element: <Dashboard></Dashboard>,
         children: [
             {
-                path: '/dashboard/orders',
+                path: 'orders',
                 element: <Orders></Orders>
+            },
+            {
+                path: 'categories',
+                element: <Categories></Categories>
             }
         ]
     }
