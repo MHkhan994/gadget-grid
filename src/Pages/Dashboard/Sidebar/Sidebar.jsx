@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './Sidebar.css'
 
 import { BsCart2 } from 'react-icons/bs'
@@ -6,13 +6,24 @@ import { TbDevicesPlus } from 'react-icons/tb'
 import { HiMiniSquaresPlus } from 'react-icons/hi2'
 import { TbDeviceAnalytics } from 'react-icons/tb'
 import { LiaUsersCogSolid } from 'react-icons/lia'
+import { useEffect } from 'react';
+import Aos from 'aos';
 
 const Sidebar = () => {
+
+    useEffect(() => {
+        Aos.init({
+            once: true,
+            duration: 1000
+        })
+    }, [])
+
+    const navigate = useNavigate()
     return (
-        <div className="sidebar h-screen w-72 overflow-y-auto border-r shadow-xl">
+        <div data-aos="fade-right" className="sidebar h-screen w-72 overflow-y-auto border-r shadow-xl">
             <div className="h-full py-10">
                 <div className='pb-10 flex justify-center'>
-                    <img src="/logo.png" className='h-10' alt="" />
+                    <img onClick={() => navigate('/')} src="/logo.png" className='h-10 cursor-pointer' alt="" />
                 </div>
                 <div className='flex flex-col gap-2 text-lg ps-3'>
                     <NavLink to={'/dashboard/orders'} className={({ isActive }) => isActive ? 'link-active' : 'links'}>

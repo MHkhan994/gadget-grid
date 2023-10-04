@@ -70,5 +70,27 @@ body{
     color:var(--color-blue)
 }
 
+.bg-blue{
+    @apply bg-[#6817E3]
+}
+
+
+
+
+/* ==================scrollbar====================== */
+::-webkit-scrollbar{
+    width: 8px;
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: #69469b;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-track{
+    background-color: #6917e33a;
+}
+
 
 
