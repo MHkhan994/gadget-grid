@@ -1,0 +1,46 @@
+.sidebar::-webkit-scrollbar{
+    width: 8px;
+    background-color: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+    background-color: #A408C7;
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-track{
+    background-color: transparent;
+}
+
+.links {
+    position: relative;
+    @apply h-11 flex gap-4 items-center ps-6 rounded-s-full text-base;
+
+    /* Set up initial background state, could be a solid color or transparent */
+    background-color: transparent;
+
+    /* Create a pseudo-element that covers the .links */
+    &:before {
+        content: "";
+        position: absolute;
+        border-start-start-radius: 9999px;
+    border-end-start-radius: 9999px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -1; /* Place it behind the content of the .links */
+        background-image: linear-gradient(to right, #A408C7, #6817E3);
+        opacity: 0;
+        transition: opacity .3s ease-in;
+    }
+
+    /* On hover, transition the opacity of the pseudo-element to 1 (fully visible) */
+    &:hover:before {
+        opacity: 1;
+    }
+}
+
+.links:hover {
+    @apply text-white;
+}

@@ -90,7 +90,7 @@ const Navbar = () => {
                     {
                         userOpen && <div className='absolute flex justify-center gap-3 flex-col items-center pb-3 right-6 top-16 bg-gradient shadow-lg rounded-md h-40 w-40 z-60'>
                             <h1 className='text-orange text-center'>{user?.displayName}</h1>
-                            <NavLink to={'/account'} className={(isActive) => isActive ? 'text-white' : ''}>Account</NavLink>
+                            <NavLink to={'/dashboard'} className={(isActive) => isActive ? 'text-white' : ''}>Dashboard</NavLink>
                             {
                                 !user && <button className='text-white' onClick={() => {
                                     document.getElementById('my_modal_4').showModal()
