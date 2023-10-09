@@ -6,6 +6,8 @@ import { TbDevicesPlus } from 'react-icons/tb'
 import { HiMiniSquaresPlus } from 'react-icons/hi2'
 import { TbDeviceAnalytics } from 'react-icons/tb'
 import { LiaUsersCogSolid } from 'react-icons/lia'
+import { PiDesktopTowerDuotone } from 'react-icons/pi'
+import { BiCategoryAlt } from 'react-icons/bi'
 import { useEffect } from 'react';
 import Aos from 'aos';
 
@@ -20,7 +22,7 @@ const Sidebar = () => {
 
     const navigate = useNavigate()
     return (
-        <div data-aos="fade-right" className="sidebar h-screen w-72 overflow-y-auto border-r shadow-xl">
+        <div data-aos="fade-right" className="sidebar h-screen w-[22vw] overflow-y-auto border-r shadow-xl">
             <div className="h-full py-10">
                 <div className='pb-10 flex justify-center'>
                     <img onClick={() => navigate('/')} src="/logo.png" className='h-10 cursor-pointer' alt="" />
@@ -30,10 +32,16 @@ const Sidebar = () => {
                         <BsCart2 className='text-xl'></BsCart2>Orders
                     </NavLink>
                     <NavLink className={'links'}>
+                        <PiDesktopTowerDuotone className='text-xl'></PiDesktopTowerDuotone>Products
+                    </NavLink>
+                    <NavLink className={'links'}>
                         <TbDevicesPlus className='text-xl'></TbDevicesPlus>Add Product
                     </NavLink>
                     <NavLink to={'/dashboard/categories'} className={({ isActive }) => isActive ? 'link-active' : 'links'}>
-                        <HiMiniSquaresPlus className='text-xl'></HiMiniSquaresPlus>Categories
+                        <BiCategoryAlt className='text-xl'></BiCategoryAlt>Categories
+                    </NavLink>
+                    <NavLink to={'/dashboard/add-category'} className={({ isActive }) => isActive ? 'link-active' : 'links'}>
+                        <HiMiniSquaresPlus className='text-xl'></HiMiniSquaresPlus>Add Category
                     </NavLink>
                     <NavLink className={'links'}>
                         <TbDeviceAnalytics className='text-xl'></TbDeviceAnalytics>

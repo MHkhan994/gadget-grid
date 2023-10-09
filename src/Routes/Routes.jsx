@@ -3,7 +3,8 @@ import Main from "../Layout/Main";
 import Home from "../Pages/Home/Home";
 import Dashboard from "../Layout/Dashboard";
 import Orders from "../Pages/Dashboard/DashboardPages/Orders";
-import Categories from "../Pages/Dashboard/DashboardPages/Categories";
+import AddCategory from "../Pages/Dashboard/DashboardPages/AddCategory/AddCategory";
+import Categories from "../Pages/Dashboard/DashboardPages/Categories/Categories";
 
 const router = createBrowserRouter([
     {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
             {
                 path: 'categories',
                 element: <Categories></Categories>
+            },
+            {
+                path: 'add-category',
+                element: <AddCategory></AddCategory>
             }
         ]
     }
